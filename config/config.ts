@@ -19,6 +19,7 @@ interface CustomEnv {
     host: string;
     user: string;
     password: string;
+    schema: string;
   }
 }
 
@@ -37,9 +38,10 @@ const dev: CustomEnv = {
     port: 3001,
   },
   db: {
-    host: process.env.DB_HOST as string,
-    user: process.env.DB_USER as string,
+    host: 'localhost',
+    user: 'gideon',
     password: process.env.DB_PASSWORD as string,
+    schema: 'SCHEMA_TEMPLATE',
   }
 };
 

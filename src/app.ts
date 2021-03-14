@@ -1,15 +1,18 @@
 import express from 'express';
-import { connect } from './services/mysql';
+import { logger } from './services/logger';
+import { callProcedure } from './services/mysql';
 const app = express();
 
 app.get('/', (req, res) => res.send('Express + TypeScript Server'));
 
-
 const test = async () => {
-  const connection = await connect();
-  console.log(connection);
+  try {
+    const res = await callProcedure('GET$PERSON_PETS', { PERSON_ID: 1 });
+    console.log(res);
+  } catch (e) {
+    logger.error(e);
+  }
 };
-
 
 test();
 
