@@ -46,5 +46,6 @@ export const executeQuery = (sql: string, values: unknown = undefined): Promise<
 
 export const callProcedure = async (procedureName: string, value: unknown): Promise<any> => {
   const res = await executeQuery(`CALL ${procedureName}(?, @OUTPUT); SELECT @OUTPUT;`, value);
-  return res[1][0]['@OUTPUT'];
+  const stringRes = res[1][0]['@OUTPUT'];
+  return stringRes ? JSON.parse(stringRes) : null;
 };
