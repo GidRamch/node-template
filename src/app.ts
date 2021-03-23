@@ -1,23 +1,15 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { handleError } from './services/error-handler';
 import { logger } from './services/logger';
-import { callProcedure } from './services/mysql';
+
+import mainController from './components/main/mainController';
+
 const app = express();
 
 app.use(express.json());
 
-app.get('/', (req: Request, res: Response) => res.send('Express + TypeScript Server'));
+app.use(mainController);
 
-app.get('/person-pets', async (req: Request, res: Response, next) => {
-  try {
-    const data = await callProcedure('READ$PERSON_PETS', { PERSON_ID: req.body.personId });
-
-    res.status(200).send(data ?? []);
-
-  } catch (err) {
-    next(err);
-  }
-});
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   logger.debug('Error caugt in handler middleware!');

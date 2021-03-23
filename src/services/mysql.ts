@@ -1,5 +1,6 @@
 import config from '../../config/config';
 import mysql, { Pool } from 'mysql';
+import { logger } from './logger';
 
 
 let connectionPool: Pool;     // Not meant to be referenced directly -> use getConnectionPool();
@@ -45,7 +46,12 @@ export const executeQuery = (sql: string, values: unknown = undefined): Promise<
 
 
 export const callProcedure = async (procedureName: string, value: unknown): Promise<any> => {
+  logger.debug(`Procedure: ${procedureName} | Input: %o`, value);
+
   const res = await executeQuery(`CALL ${procedureName}(?, @OUTPUT); SELECT @OUTPUT;`, value);
   const stringRes = res[1][0]['@OUTPUT'];
+
+  logger.debug(`Result: ${stringRes} | Procedure: ${procedureName} | Input: %o`, value);
+
   return stringRes ? JSON.parse(stringRes) : null;
 };
