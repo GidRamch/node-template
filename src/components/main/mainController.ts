@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express';
+import { AppError } from '../../models/AppError';
 import { logger } from '../../services/logger';
 import { callProcedure } from '../../services/mysql';
 
@@ -19,7 +20,7 @@ router.get('/:procedureName', async (req: Request, res: Response, next: NextFunc
     );
 
     if (data?.ERROR === 'Not Found') {
-      res.status(404).send(data);
+      throw new AppError('Procedure was not found in $READ$CONTROLLER master', 'Resource Not Found', 404);
     } else {
       res.status(200).send(data ?? []);
     }

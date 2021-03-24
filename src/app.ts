@@ -3,27 +3,34 @@ import { handleError } from './services/error-handler';
 import { logger } from './services/logger';
 
 import mainController from './components/main/mainController';
+import userController from './components/user/userController';
+import authController from './components/auth/authController';
 
 const app = express();
 
 app.use(express.json());
 
+app.use(authController);
 app.use(mainController);
+app.use(userController);
 
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  logger.debug('Error caugt in handler middleware!');
+  logger.debug('Error caught in handling middleware!');
   handleError(err, res);
 });
 
+process.on('unhandledRejection', (err: Error) => {
+  // We just caught an unhandled promise rejection,
+  // since we already have fallback handler for unhandled errors (see below),
+  // lets throw and let him handle that
+  throw err;
+});
+
 process.on('uncaughtException', (err: Error) => {
-  logger.debug('Error caugt in uncaughtException middleware!');
+  logger.debug('Error caught in uncaughtException middleware!');
   handleError(err);
 });
 
-process.on('unhandledRejection', (err: Error) => {
-  logger.debug('Error caugt in unhandledRejection middleware!');
-  handleError(err);
-});
 
 export default app;
