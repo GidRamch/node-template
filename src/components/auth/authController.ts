@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express';
+import { AppError } from '../../models/AppError';
 import { compareHash } from '../../services/hasher';
 import { logger } from '../../services/logger';
 import { callProcedure } from '../../services/mysql';
@@ -21,13 +22,17 @@ router.post(`${baseRoute}/login`, async (req: Request, res: Response, next: Next
       { EMAIL }
     );
 
-    if (!mysqlData?.PASSWORD) { return res.status(401).send(); }
+    if (!mysqlData?.PASSWORD) { throw new AppError(`No Password found for given email: ${EMAIL}`, 'Unauthorized', 403); }
 
     const hashedPassword = mysqlData.PASSWORD;
 
     const authenticated = await compareHash(PASSWORD, hashedPassword);
 
     delete mysqlData.PASSWORD;
+    
+    if (!authenticated) {
+      throw new AppError(`Comparison of entered and stored passwords resulted false for email: ${EMAIL}`, 'Unauthorized', 401);
+    }
 
     res.status(authenticated ? 200 : 401).send(authenticated ? mysqlData : null);
 
