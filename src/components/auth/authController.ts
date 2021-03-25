@@ -24,7 +24,7 @@ router.post(
       const PASSWORD = req.body.password;
 
       const mysqlData = await callProcedure(
-        'USER_ACCOUNT$GET_PASSWORD_VIA_EMAIL',
+        'READ$USER_ACCOUNT_PASSWORD_VIA_EMAIL',
         { EMAIL }
       );
 
