@@ -12,7 +12,7 @@ export const handleError = (error: Error, res?: Response): void => {
     process.exit(1);
   } else {
     if (res && !res.headersSent) {
-      res.status(error.httpStatusCode).json(error.httpMessage);
+      res.status(error.httpStatusCode).json(error.httpData);
     }
   }
 };
