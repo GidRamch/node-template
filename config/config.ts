@@ -49,7 +49,7 @@ const dev: CustomEnv = {
 
 // };
 
-// const prod:CustomEnv = {
+// const production:CustomEnv = {
 
 // };
 
