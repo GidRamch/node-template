@@ -1,4 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
+import helmet from 'helmet';
+
 import { handleError } from './services/error-handler';
 import { logger } from './services/logger';
 
@@ -7,6 +9,8 @@ import userController from './components/user/userController';
 import authController from './components/auth/authController';
 
 const app = express();
+
+app.use(helmet());
 
 app.use(express.json());
 
