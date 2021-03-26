@@ -7,9 +7,9 @@ export const validate = (req: Request, res: Response, next: NextFunction): void 
   const errors = validationResult(req);
   if (errors.isEmpty()) { return next(); }
 
-  const allErrors: { [x: string]: any; }[] = [];
+  const allErrors: { [x: string]: string[]; }= {};
 
-  errors.array().map(err => allErrors.push({ [err.param]: err.msg }));
+  errors.array().forEach(err => allErrors[err.param] ? allErrors[err.param].push(err.msg) : allErrors[err.param] = [err.msg]);
 
   throw new AppError('Request Body Validation Failed', allErrors, 400);
 };
