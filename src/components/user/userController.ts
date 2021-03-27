@@ -8,9 +8,9 @@ const router = express.Router();
 
 const baseRoute = '/user';
 
-router.post(`${baseRoute}/create`, async (req: Request, res: Response, next: NextFunction) => {
+router.post(`${baseRoute}`, async (req: Request, res: Response, next: NextFunction) => {
 
-  logger.info(`POST ${baseRoute}/create`);
+  logger.info(`POST ${baseRoute}`);
 
   try {
     const EMAIL = req.body.email;
