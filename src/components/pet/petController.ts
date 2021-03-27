@@ -6,6 +6,29 @@ const router = express.Router();
 
 const baseRoute = '/pets';
 
+
+router.get(`${baseRoute}`, async (req: Request, res: Response, next: NextFunction) => {
+  logger.info(`GET ${baseRoute}`);
+
+  try {
+    const OWNER_ID = req.body.ownerId;
+
+    const data = await callProcedure(
+      'READ$PETS_VIA_OWNER',
+      {
+        OWNER_ID,
+      }
+    );
+
+    res.status(200).send(data);
+
+  } catch (err) {
+    next(err);
+  }
+
+});
+
+
 router.post(`${baseRoute}`, async (req: Request, res: Response, next: NextFunction) => {
 
   logger.info(`POST ${baseRoute}`);
@@ -13,7 +36,7 @@ router.post(`${baseRoute}`, async (req: Request, res: Response, next: NextFuncti
   try {
     const NAME = req.body.name;
     const OWNER_ID = req.body.ownerId;
-    
+
     const data = await callProcedure(
       'CREATE$PET',
       {
@@ -37,7 +60,7 @@ router.delete(`${baseRoute}/:id`, async (req: Request, res: Response, next: Next
 
   try {
     const ID = req.params.id;
-    
+
     const data = await callProcedure(
       'DELETE$PET',
       {
@@ -60,8 +83,8 @@ router.put(`${baseRoute}/:id`, async (req: Request, res: Response, next: NextFun
 
   try {
     const ID = req.params.id;
-    const NAME= req.body.name;
-    
+    const NAME = req.body.name;
+
     const data = await callProcedure(
       'UPDATE$PET',
       {
