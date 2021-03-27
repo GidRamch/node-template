@@ -10,14 +10,14 @@ const baseRoute = '/user';
 
 router.post(`${baseRoute}/create`, async (req: Request, res: Response, next: NextFunction) => {
 
-  logger.info(`POST /${baseRoute}/create`);
+  logger.info(`POST ${baseRoute}/create`);
 
   try {
     const EMAIL = req.body.email;
     const PASSWORD = await getHash(req.body.password);
     
     const data = await callProcedure(
-      'INS$USER_ACCOUNT',
+      'CREATE$USER_ACCOUNT',
       {
         EMAIL,
         PASSWORD,

@@ -7,6 +7,7 @@ import { logger } from './services/logger';
 import mainController from './components/main/mainController';
 import userController from './components/user/userController';
 import authController from './components/auth/authController';
+import petController from './components/pet/petController';
 
 const app = express();
 
@@ -15,8 +16,9 @@ app.use(helmet());
 app.use(express.json());
 
 app.use(authController);
-app.use(mainController);
+// app.use(mainController);
 app.use(userController);
+app.use(petController);
 
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
