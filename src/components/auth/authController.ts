@@ -4,7 +4,7 @@ import { AppError } from '../../models/AppError';
 import { compareHash } from '../../services/hasher';
 import { logger } from '../../services/logger';
 import { callProcedure } from '../../services/mysql';
-import { getValidationRules } from './authValidator';
+import { getAuthValidationRules } from './authValidator';
 
 const router = express.Router();
 
@@ -13,7 +13,7 @@ const baseRoute = '/auth';
 
 router.post(
   `${baseRoute}/login`,
-  getValidationRules('login'),
+  getAuthValidationRules('login'),
   validate,
   async (req: Request, res: Response, next: NextFunction) => {
 

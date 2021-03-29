@@ -32,4 +32,4 @@ const rules: Record<string, ValidationChain[]> = {
 };
 
 
-export const getValidationRules = (method: string): ValidationChain[] => rules[method];
+export const getPetValidationRules = (method: string): ValidationChain[] => rules[method];

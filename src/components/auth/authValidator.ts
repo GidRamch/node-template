@@ -17,4 +17,4 @@ const rules: Record<string, ValidationChain[]> = {
 };
 
 
-export const getValidationRules = (method: string): ValidationChain[] => rules[method];
+export const getAuthValidationRules = (method: string): ValidationChain[] => rules[method];

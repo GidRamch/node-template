@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import { validate } from '../../middleware/validator';
 import { logger } from '../../services/logger';
 import { createPet, deletePet, readPets, updatePet } from './petDAL';
-import { getValidationRules } from './petValidator';
+import { getPetValidationRules } from './petValidator';
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ const baseRoute = '/pets';
 
 router.get(
   `${baseRoute}`,
-  getValidationRules('getPets'),
+  getPetValidationRules('getPets'),
   validate,
   async (req: Request, res: Response, next: NextFunction) => {
     logger.info(`GET ${baseRoute}`);
@@ -29,7 +29,7 @@ router.get(
 
 router.post(
   `${baseRoute}`,
-  getValidationRules('postPets'),
+  getPetValidationRules('postPets'),
   validate,
   async (req: Request, res: Response, next: NextFunction) => {
 
@@ -49,7 +49,7 @@ router.post(
 
 router.delete(
   `${baseRoute}/:id`,
-  getValidationRules('deletePets'),
+  getPetValidationRules('deletePets'),
   validate,
   async (req: Request, res: Response, next: NextFunction) => {
 
@@ -68,7 +68,7 @@ router.delete(
 
 router.put(
   `${baseRoute}/:id`,
-  getValidationRules('updatePets'),
+  getPetValidationRules('updatePets'),
   validate,
   async (req: Request, res: Response, next: NextFunction) => {
 
