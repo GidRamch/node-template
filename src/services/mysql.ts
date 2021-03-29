@@ -22,7 +22,7 @@ export const getConnectionPool = (): Pool => {
 };
 
 
-export const executeQuery = (sql: string, values: unknown = undefined): Promise<any> => {
+const executeQuery = (sql: string, values: unknown = undefined): Promise<any> => {
   return new Promise((resolve, reject) => {
     try {
       const pool = getConnectionPool();
@@ -45,6 +45,12 @@ export const executeQuery = (sql: string, values: unknown = undefined): Promise<
 };
 
 
+/**
+ * 
+ * @param procedureName name of procedure to invoke (only pass hardcoded strings to this, never user input)
+ * @param value value to pass to procedure as input
+ * @returns promise of output data from procedure
+ */
 export const callProcedure = async (procedureName: string, value: unknown): Promise<any> => {
   logger.debug(`Procedure: ${procedureName} | Input: %o`, value);
 

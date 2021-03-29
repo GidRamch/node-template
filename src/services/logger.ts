@@ -26,7 +26,7 @@ export const logger = createLogger({
         dirname: join(__dirname, '../../logs/'),
         filename: 'app.log',
         maxFiles: 4,
-        maxsize: 25 * 1000 * 1000,  // 10 MB
+        maxsize: 25 * 1000 * 1000,  // 25 MB
         tailable: true,
       }),
   ],
