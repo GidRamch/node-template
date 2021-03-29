@@ -1,22 +1,26 @@
 import express, { NextFunction, Request, Response } from 'express';
 import helmet from 'helmet';
 
+import { components } from './components/components';
 import { handleError } from './services/error-handler';
 import { logger } from './services/logger';
 
-import userController from './components/user/userController';
-import authController from './components/auth/authController';
-import petController from './components/pet/petController';
 
-const app = express();
+const app = express();    // Create express app
+
+
+/** Use Third Party Middleware */
 
 app.use(helmet());
 app.use(express.json());
 
-app.use(authController);
-app.use(userController);
-app.use(petController);
 
+/** Use App Middleware */
+
+app.use(components);
+
+
+/** Define error handlers */
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   logger.debug('Error caught in handling middleware!');
@@ -24,10 +28,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 });
 
 process.on('unhandledRejection', (err: Error) => {
-  // We just caught an unhandled promise rejection,
-  // since we already have fallback handler for unhandled errors (see below),
-  // lets throw and let him handle that
-  throw err;
+  throw err;  // throw err to be caught in uncaught exception handler below.
 });
 
 process.on('uncaughtException', (err: Error) => {
@@ -36,4 +37,4 @@ process.on('uncaughtException', (err: Error) => {
 });
 
 
-export default app;
+export default app;   // export app to be served
