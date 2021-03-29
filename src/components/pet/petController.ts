@@ -1,66 +1,88 @@
 import express, { NextFunction, Request, Response } from 'express';
+import { validate } from '../../middleware/validator';
 import { logger } from '../../services/logger';
 import { createPet, deletePet, readPets, updatePet } from './petDAL';
+import { getValidationRules } from './petValidator';
 
 const router = express.Router();
 
 const baseRoute = '/pets';
 
 
-router.get(`${baseRoute}`, async (req: Request, res: Response, next: NextFunction) => {
-  logger.info(`GET ${baseRoute}`);
+router.get(
+  `${baseRoute}`,
+  getValidationRules('getPets'),
+  validate,
+  async (req: Request, res: Response, next: NextFunction) => {
+    logger.info(`GET ${baseRoute}`);
 
-  try {
-    const OWNER_ID = req.body.ownerId;
-    const data = await readPets(OWNER_ID);
+    try {
+      const OWNER_ID = req.body.ownerId;
+      const data = await readPets(OWNER_ID);
 
-    res.status(200).send(data);
+      res.status(200).send(data);
 
-  } catch (err) { next(err); }
-});
-
-
-router.post(`${baseRoute}`, async (req: Request, res: Response, next: NextFunction) => {
-
-  logger.info(`POST ${baseRoute}`);
-
-  try {
-    const NAME = req.body.name;
-    const OWNER_ID = req.body.ownerId;
-    const data = await createPet(NAME, OWNER_ID);
-
-    res.status(200).send(data);
-
-  } catch (err) { next(err); }
-});
+    } catch (err) { next(err); }
+  }
+);
 
 
-router.delete(`${baseRoute}/:id`, async (req: Request, res: Response, next: NextFunction) => {
+router.post(
+  `${baseRoute}`,
+  getValidationRules('postPets'),
+  validate,
+  async (req: Request, res: Response, next: NextFunction) => {
 
-  logger.info(`DELETE ${baseRoute}`);
+    logger.info(`POST ${baseRoute}`);
 
-  try {
-    const ID = parseInt(req.params.id);
-    const data = await deletePet(ID);
+    try {
+      const NAME = req.body.name;
+      const OWNER_ID = req.body.ownerId;
+      const data = await createPet(OWNER_ID, NAME);
 
-    res.status(200).send(data);
+      res.status(200).send(data);
 
-  } catch (err) { next(err); }
-});
+    } catch (err) { next(err); }
+  }
+);
 
 
-router.put(`${baseRoute}/:id`, async (req: Request, res: Response, next: NextFunction) => {
+router.delete(
+  `${baseRoute}/:id`,
+  getValidationRules('deletePets'),
+  validate,
+  async (req: Request, res: Response, next: NextFunction) => {
 
-  logger.info(`PUT ${baseRoute}`);
+    logger.info(`DELETE ${baseRoute}`);
 
-  try {
-    const ID = parseInt(req.params.id);
-    const NAME = req.body.name;
-    const data = await updatePet(ID, NAME);
+    try {
+      const ID = parseInt(req.params.id);
+      const data = await deletePet(ID);
 
-    res.status(200).send(data);
+      res.status(200).send(data);
 
-  } catch (err) { next(err); }
-});
+    } catch (err) { next(err); }
+  }
+);
+
+
+router.put(
+  `${baseRoute}/:id`,
+  getValidationRules('updatePets'),
+  validate,
+  async (req: Request, res: Response, next: NextFunction) => {
+
+    logger.info(`PUT ${baseRoute}`);
+
+    try {
+      const ID = parseInt(req.params.id);
+      const NAME = req.body.name;
+      const data = await updatePet(ID, NAME);
+
+      res.status(200).send(data);
+
+    } catch (err) { next(err); }
+  }
+);
 
 export default router;
