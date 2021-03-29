@@ -1,5 +1,6 @@
 import { createLogger, format, transports } from 'winston';
 import PrettyError from 'pretty-error';
+import { join } from 'path';
 const pe = new PrettyError();
 
 
@@ -19,6 +20,14 @@ export const logger = createLogger({
   ),
   defaultMeta: { service: 'NODE-TEMPLATE' },
   transports: [
-    new transports.Console()
+    new transports.Console(),
+    new transports.File(
+      {
+        dirname: join(__dirname, '../../logs/'),
+        filename: 'app.log',
+        maxFiles: 4,
+        maxsize: 25 * 1000 * 1000,  // 10 MB
+        tailable: true,
+      }),
   ],
 });
