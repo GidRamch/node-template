@@ -3,16 +3,22 @@ import { AppError } from '../models/AppError';
 import { logger } from './logger';
 
 export const handleError = (error: Error, res?: Response): void => {
-  logger.error(error);
-  
-  if (!(error instanceof AppError) || !error.isTrusted) {
-    if (res && !res.headersSent) {
-      res.status(500).send('There was an internal server error');
-    }
-    process.exit(1);
-  } else {
+
+  if ((error instanceof AppError) && error.isTrusted) {
+    logger.warn(error);
+
     if (res && !res.headersSent) {
       res.status(error.httpStatusCode).json(error.httpData);
     }
+
+    return;
   }
+
+  logger.error(error);
+
+  if (res && !res.headersSent) {
+    res.status(500).send('There was an internal server error');
+  }
+
+  process.exit(1);
 };
