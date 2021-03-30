@@ -10,11 +10,6 @@ interface CustomEnv {
     protocol: string;
     port: number;
   },
-  server: {
-    host: string;
-    protocol: string;
-    port: number;
-  },
   db: {
     host: string;
     user: string;
@@ -28,17 +23,12 @@ interface CustomEnv {
 
 const dev: CustomEnv = {
   app: {
-    host: 'localhost',
+    host: '127.0.0.1',
     protocol: 'http',
     port: 3000,
   },
-  server: {
-    host: 'localhost',
-    protocol: 'http',
-    port: 3001,
-  },
   db: {
-    host: 'localhost',
+    host: '127.0.0.1',
     user: 'gideon',
     password: process.env.DB_PASSWORD as string,
     schema: 'SCHEMA_TEMPLATE',
