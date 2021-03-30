@@ -23,7 +23,7 @@ interface CustomEnv {
 
 const dev: CustomEnv = {
   app: {
-    host: '127.0.0.1',
+    host: '0.0.0.0',
     protocol: 'http',
     port: 3000,
   },
