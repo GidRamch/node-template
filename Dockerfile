@@ -4,8 +4,6 @@ WORKDIR /src
 COPY package*.json ./
 COPY .env ./
 
-EXPOSE 3000
-
 RUN npm ci
 
 COPY ./build .

@@ -14,11 +14,11 @@ export const handleError = (error: Error, res?: Response): void => {
     return;
   }
 
-  logger.error(error);
-
   if (res && !res.headersSent) {
     res.status(500).send('There was an internal server error');
   }
 
-  process.exit(1);
+  logger.error(error).on('finish', () => {
+    process.exit(1);
+  });
 };
