@@ -18,7 +18,8 @@ export const handleError = (error: Error, res?: Response): void => {
     res.status(500).send('There was an internal server error');
   }
 
-  logger.error(error).on('finish', () => {
-    process.exit(1);
-  });
+  logger.on('finish', () => setTimeout(() => process.exit(1), 1000));
+
+  logger.error(error);
+  logger.end();
 };
