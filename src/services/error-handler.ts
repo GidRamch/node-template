@@ -20,6 +20,7 @@ export const handleError = (error: Error, res?: Response): void => {
 
   logger.on('finish', () => setTimeout(() => process.exit(1), 1000));
 
+  logger.info('Exiting Server...');
   logger.error(error);
   logger.end();
 };
